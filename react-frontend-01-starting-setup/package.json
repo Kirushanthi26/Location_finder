@@ -5,12 +5,13 @@
   "dependencies": {
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-router-dom": "5.3.4",
     "react-scripts": "3.2.0"
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts --openssl-legacy-provider build"
-},
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
