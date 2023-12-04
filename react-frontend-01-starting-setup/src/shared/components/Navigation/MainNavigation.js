@@ -1,7 +1,8 @@
 import React from "react";
 import "./MainNavigation.css";
 import MainHeader from "./MainHeader";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import NavLinks from "./NavLinks";
 
 const MainNavigation = (props) => {
   return (
@@ -13,9 +14,9 @@ const MainNavigation = (props) => {
       </button>
       <h1 className="main-navigation__title">
         <Link to="/">YourPlaces</Link>
-        </h1>
+      </h1>
       <nav>
-        ...
+        <NavLinks />
       </nav>
     </MainHeader>
   );
