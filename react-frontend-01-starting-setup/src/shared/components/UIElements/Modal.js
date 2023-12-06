@@ -11,7 +11,7 @@ const ModalOverlay = (props) => {
         <h2>{props.header}</h2>
       </header>
       <form
-        onSubmit={props.onSubmit ? props.onSubmit : (e) => e.preventDefault}
+        onSubmit={props.onSubmit ? props.onSubmit : (e) => e.preventDefault()}
       >
         <div className={`modal__content ${props.contentClass}`}>
           {props.children}
@@ -38,7 +38,7 @@ const Modal = (props) => {
         timeout={200}
       >
         <ModalOverlay {...props}/>
-        
+
       </CSSTransition>
     </>
   );
