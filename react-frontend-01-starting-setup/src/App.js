@@ -30,6 +30,9 @@ const App = () => {
           <Route path="/places/:placeId" exact>
             <UpdatePlace/>
           </Route>
+          <Route path="/places/:placeId" exact>
+            <UpdatePlace/>
+          </Route>
           <Redirect to="/" />
         </Switch>
       </main>

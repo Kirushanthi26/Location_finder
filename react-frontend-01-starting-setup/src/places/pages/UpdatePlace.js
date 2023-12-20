@@ -6,10 +6,11 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from "../../shared/util/validators";
+import "./PlaceForm.css";
 
 const DUMMY_PLACES = [
   {
-    id: "p1",
+    id: 'p1',
     title: "Lotus Tower",
     description:
       "Lotus Tower located in Colombo, Sri Lanka. It has been called a symbolic landmark of Sri Lanka. ",
@@ -23,7 +24,7 @@ const DUMMY_PLACES = [
     creator: "u1",
   },
   {
-    id: "p2",
+    id: 'p2',
     title: "Lotus Tower",
     description:
       "Lotus Tower located in Colombo, Sri Lanka. It has been called a symbolic landmark of Sri Lanka. ",
@@ -52,7 +53,7 @@ const UpdatePlace = () => {
   }
 
   return (
-    <form>
+    <form className="place-form">
       <Input
         id="title"
         type="text"
