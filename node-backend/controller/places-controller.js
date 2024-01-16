@@ -1,36 +1,36 @@
-const { v4: uuidv4 } = require('uuid');
-const HttpError = require("../models/http-error")
+const { v4: uuidv4 } = require("uuid");
+const HttpError = require("../models/http-error");
 
 const DUMMY_PLACES = [
-    {
-      id: "p1",
-      title: "Lotus Tower",
-      description:
-        "Lotus Tower located in Colombo, Sri Lanka. It has been called a symbolic landmark of Sri Lanka. ",
-      imageUrl:
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/61/14/af/caption.jpg?w=1200&h=1200&s=1",
-      address: "AC6, Colombo 01000",
-      location: {
-        lat: 6.9273044588293065,
-        lng: 79.8583383153592,
-      },
-      creator: "u1",
+  {
+    id: "p1",
+    title: "Lotus Tower",
+    description:
+      "Lotus Tower located in Colombo, Sri Lanka. It has been called a symbolic landmark of Sri Lanka. ",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/61/14/af/caption.jpg?w=1200&h=1200&s=1",
+    address: "AC6, Colombo 01000",
+    location: {
+      lat: 6.9273044588293065,
+      lng: 79.8583383153592,
     },
-    {
-      id: "p2",
-      title: "Lotus Tower",
-      description:
-        "Lotus Tower located in Colombo, Sri Lanka. It has been called a symbolic landmark of Sri Lanka. ",
-      imageUrl:
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/61/14/af/caption.jpg?w=1200&h=1200&s=1",
-      address: "AC6, Colombo 01000",
-      location: {
-        lat: 6.9273044588293065,
-        lng: 79.8583383153592,
-      },
-      creator: "u2",
+    creator: "u1",
+  },
+  {
+    id: "p2",
+    title: "Lotus Tower",
+    description:
+      "Lotus Tower located in Colombo, Sri Lanka. It has been called a symbolic landmark of Sri Lanka. ",
+    imageUrl:
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/61/14/af/caption.jpg?w=1200&h=1200&s=1",
+    address: "AC6, Colombo 01000",
+    location: {
+      lat: 6.9273044588293065,
+      lng: 79.8583383153592,
     },
-  ];
+    creator: "u2",
+  },
+];
 
 const getPlaceById = (req, res, next) => {
   const placeID = req.params.pid;
@@ -67,23 +67,40 @@ const getPlaceByUserId = (req, res, next) => {
 };
 
 const createPlace = (req, res, next) => {
-    //short form of ==> const title = req.body.title
-    const {title, description, coordinates, address, creator} = req.body;
-    const createdPlace = {
-        id: uuidv4(),
-        title: title,
-        description:description,
-        location: coordinates,
-        address:address,
-        creator:creator
-    }
+  //short form of ==> const title = req.body.title
+  const { title, description, coordinates, address, creator } = req.body;
+  const createdPlace = {
+    id: uuidv4(),
+    title: title,
+    description: description,
+    location: coordinates,
+    address: address,
+    creator: creator,
+  };
 
-    DUMMY_PLACES.push(createdPlace)
+  DUMMY_PLACES.push(createdPlace);
 
-    res.status(201).json({place: createdPlace})
-}
+  res.status(201).json({ place: createdPlace });
+};
+
+const updatePlaceByPlaceId = (req, res, next) => {
+  const { title, description } = req.body;
+  const placeID = req.params.pid;
+
+  const updatePlace = {...DUMMY_PLACES.find((p) => p.id === placeID)};
+  const placeIndex = DUMMY_PLACES.findIndex((p) => p.id === placeID);
+  updatePlace.title = title;
+  updatePlace.description = description;
+
+  DUMMY_PLACES[placeIndex] = updatePlace;
+
+  res.status(200).json({ place: updatePlace });
+};
+
+const deletePlace = (req, res, next) => {};
 
 exports.getPlaceById = getPlaceById;
-exports.getPlaceByUserId = getPlaceByUserId
-exports.createPlace = createPlace
-
+exports.getPlaceByUserId = getPlaceByUserId;
+exports.createPlace = createPlace;
+exports.updatePlaceByPlaceId = updatePlaceByPlaceId;
+exports.deletePlace = deletePlace;
