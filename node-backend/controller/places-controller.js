@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 const HttpError = require("../models/http-error");
-const { validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 
 let DUMMY_PLACES = [
   {
@@ -68,10 +68,10 @@ const getPlacesByUserId = (req, res, next) => {
 };
 
 const createPlace = (req, res, next) => {
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-        throw new HttpError("invalid input", 422)
-    }
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    throw new HttpError("invalid input", 422);
+  }
 
   //short form of ==> const title = req.body.title
   const { title, description, coordinates, address, creator } = req.body;
@@ -90,10 +90,15 @@ const createPlace = (req, res, next) => {
 };
 
 const updatePlaceByPlaceId = (req, res, next) => {
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    throw new HttpError("invalid input", 422);
+  }
+
   const { title, description } = req.body;
   const placeID = req.params.pid;
 
-  const updatePlace = {...DUMMY_PLACES.find((p) => p.id === placeID)};
+  const updatePlace = { ...DUMMY_PLACES.find((p) => p.id === placeID) };
   const placeIndex = DUMMY_PLACES.findIndex((p) => p.id === placeID);
   updatePlace.title = title;
   updatePlace.description = description;
@@ -104,11 +109,11 @@ const updatePlaceByPlaceId = (req, res, next) => {
 };
 
 const deletePlace = (req, res, next) => {
-    const placeID = req.params.pid;
+  const placeID = req.params.pid;
 
-    DUMMY_PLACES = DUMMY_PLACES.filter((p)=>p.id !== placeID) //keep unmatch place id 
+  DUMMY_PLACES = DUMMY_PLACES.filter((p) => p.id !== placeID); //keep unmatch place id
 
-    res.status(200).json({ message: "place deleted successfully" });
+  res.status(200).json({ message: "place deleted successfully" });
 };
 
 exports.getPlaceById = getPlaceById;
