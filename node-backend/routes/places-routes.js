@@ -1,18 +1,26 @@
 const express = require("express");
+const { check } = require('express-validator');
 
-const placesController = require("../controller/places-controller")
+const placesController = require("../controller/places-controller");
 
 const router = express.Router();
-
 
 router.get("/:pid", placesController.getPlaceById);
 
 router.get("/user/:uid", placesController.getPlacesByUserId);
 
-router.post("/", placesController.createPlace)
+router.post(
+  "/",
+  [
+    check("title").not().isEmpty(),
+    check("description").isLength({ min: 5 }),
+    check("address").not().isEmpty(),
+  ],
+  placesController.createPlace
+);
 
-router.patch("/:pid", placesController.updatePlaceByPlaceId)
+router.patch("/:pid", placesController.updatePlaceByPlaceId);
 
-router.delete("/:pid", placesController.deletePlace)
+router.delete("/:pid", placesController.deletePlace);
 
 module.exports = router;
