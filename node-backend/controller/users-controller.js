@@ -1,51 +1,58 @@
 const { v4: uuidv4 } = require("uuid");
 const HttpError = require("../models/http-error");
 
-let DUMMY_PLACES = [
+let DUMMY_USERS = [
   {
-    id: "p1",
-    title: "Lotus Tower",
-    description:
-      "Lotus Tower located in Colombo, Sri Lanka. It has been called a symbolic landmark of Sri Lanka. ",
-    imageUrl:
-      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/61/14/af/caption.jpg?w=1200&h=1200&s=1",
-    address: "AC6, Colombo 01000",
-    location: {
-      lat: 6.9273044588293065,
-      lng: 79.8583383153592,
-    },
-    creator: "u1",
+    id: "u1",
+    name: "kirushanthi",
+    email:"kirushanthi@gmail.com",
+    password:"kiru123"
   },
   {
-    id: "p2",
-    title: "Lotus Tower",
-    description:
-      "Lotus Tower located in Colombo, Sri Lanka. It has been called a symbolic landmark of Sri Lanka. ",
-    imageUrl:
-      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/61/14/af/caption.jpg?w=1200&h=1200&s=1",
-    address: "AC6, Colombo 01000",
-    location: {
-      lat: 6.9273044588293065,
-      lng: 79.8583383153592,
-    },
-    creator: "u2",
+    id: "u2",
+    name: "vithya",
+    email:"vithya@gmail.com",
+    password:"vithya123"
   },
 ];
 
 const getAllUsers = (req, res, next) => {
-  res.json({ DUMMY_PLACES });
+  res.json({ users: DUMMY_USERS });
 
-  if (DUMMY_PLACES.length === 0) {
+  if (DUMMY_USERS.length === 0) {
     return next(new HttpError("could not find users", 404))
   }
 };
 
 const createNewUser = (req, res, next) => {
-    
+    const {name, email, password} = req.body;
+
+    const hasUser = DUMMY_USERS.find(u => u.email === email)
+    if (hasUser) {
+        throw new HttpError("already registered, please Login", 401)
+    }
+
+    const signupUser = {
+        id: uuidv4(),
+        name,
+        email,
+        password
+    }
+
+    DUMMY_USERS.push(signupUser)
+    res.status(201).json({user: signupUser})
 }
 
 const loginUser = (req, res, next) => {
+    const {email, password} = req.body;
 
+    const identifiedUser = DUMMY_USERS.find(u => u.email === email)
+
+    if (!identifiedUser || identifiedUser.password !== password) {
+        throw new HttpError("wrong credentials, please try again", 401)
+    }
+
+    res.json({message: 'Login successful'})
 }
 
 exports.getAllUsers = getAllUsers;
