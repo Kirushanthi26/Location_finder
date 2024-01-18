@@ -34,7 +34,8 @@ const Map = (props) => {
         image: new window.ol.style.Icon({
           anchor: [0.5, 1],
           crossOrigin: "anonymous",
-          src: "https://docs.maptiler.com/openlayers/default-marker/marker-icon.png",
+          src: "https://cdn.iconscout.com/icon/free/png-256/free-location-4083026-3377334.png",
+          scale: 0.2
         }),
       }),
     });
