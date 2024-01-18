@@ -2,7 +2,8 @@ const { v4: uuidv4 } = require("uuid");
 const HttpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
 
-const getCoordsForAddress = require("../util/location")
+const getCoordsForAddress = require("../util/location");
+const Place = require("../models/place");
 
 let DUMMY_PLACES = [
   {
@@ -80,22 +81,28 @@ const createPlace = async (req, res, next) => {
 
   let coordinates;
   try {
-      coordinates = await getCoordsForAddress(address)
-
+    coordinates = await getCoordsForAddress(address);
   } catch (error) {
-    return next(error)
+    return next(error);
   }
 
-  const createdPlace = {
-    id: uuidv4(),
+  const createdPlace = new Place({
     title: title,
     description: description,
     location: coordinates,
     address: address,
+    image:
+      "https://images.unsplash.com/photo-1668342482782-582a821eaa59?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     creator: creator,
-  };
+  });
 
-  DUMMY_PLACES.push(createdPlace);
+  //DUMMY_PLACES.push(createdPlace);
+  try {
+    await createdPlace.save();
+  } catch (error) {
+    const err = new HttpError("creating place failed, please try again", 500);
+    return next(err);
+  }
 
   res.status(201).json({ place: createdPlace });
 };
@@ -123,7 +130,7 @@ const deletePlace = (req, res, next) => {
   const placeID = req.params.pid;
 
   if (!DUMMY_PLACES.find((p) => p.id === placeID)) {
-    throw new HttpError("could not find a place for that id", 404)
+    throw new HttpError("could not find a place for that id", 404);
   }
 
   DUMMY_PLACES = DUMMY_PLACES.filter((p) => p.id !== placeID); //keep unmatch place id
